@@ -21,7 +21,8 @@ def user_loader(userid):
     data = Member.get_role(userid)
     try:
         user.role = data[0]
-        user.name = data[1]
+        # 將 fname 和 lname 組合成全名
+        user.name = data[2] + data[1]
     except:
         pass
     return user
@@ -75,7 +76,8 @@ def register():
             return redirect(url_for("api.register"))
         else:
             input = {
-                "name": request.form["username"],
+                "fname": request.form["fname"],
+                "lname": request.form["lname"],
                 "account": user_account,
                 "password": request.form["password"],
                 "identity": request.form["identity"],

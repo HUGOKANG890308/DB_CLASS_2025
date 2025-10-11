@@ -92,7 +92,8 @@ class DB:
 class Member:
     @staticmethod
     def get_member(account):
-        sql = "SELECT account, password, mid, identity, name FROM member WHERE account = %s"
+        # 將 name 換成 fname, lname
+        sql = "SELECT account, password, mid, identity, fname, lname FROM member WHERE account = %s"
         return DB.fetchall(sql, (account,))
 
     @staticmethod
@@ -102,11 +103,13 @@ class Member:
 
     @staticmethod
     def create_member(input_data):
-        sql = "INSERT INTO member (name, account, password, identity) VALUES (%s, %s, %s, %s)"
+        # 插入時使用 fname 和 lname
+        sql = "INSERT INTO member (fname, lname, account, password, identity) VALUES (%s, %s, %s, %s, %s)"
         DB.execute_input(
             sql,
             (
-                input_data["name"],
+                input_data["fname"],
+                input_data["lname"],
                 input_data["account"],
                 input_data["password"],
                 input_data["identity"],
@@ -125,7 +128,8 @@ class Member:
 
     @staticmethod
     def get_role(userid):
-        sql = "SELECT identity, name FROM member WHERE mid = %s"
+        # 取得 fname 和 lname
+        sql = "SELECT identity, fname, lname FROM member WHERE mid = %s"
         return DB.fetchone(sql, (userid,))
 
 
